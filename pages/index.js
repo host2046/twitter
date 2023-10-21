@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Sidebar from "../components/Sidebar";
+import Feed from "../components/Feed";
 
 const index = () => {
   return (
@@ -11,6 +12,7 @@ const index = () => {
       </Head>
       <main className="flex min-h-screen max-w-7xl mx-auto ">
         <Sidebar />
+        <Feed />
       </main>
     </div>
   );
