@@ -13,7 +13,7 @@ import {
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
 const Sidebar = () => (
-  <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
+  <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full ml-24">
     <div className="hoverEffect p-0 hover:bg-blue-100 xl:p-1.5 ">
       <Image
         width="50"
@@ -23,7 +23,7 @@ const Sidebar = () => (
       />
     </div>
 
-    <div className='mt-4 mb-2.5 xl:items-start'>
+    <div className="mt-4 mb-2.5 xl:items-start">
       <SidebarMenuItem text="Home" Icon={HomeIcon} active />
       <SidebarMenuItem text="Explore" Icon={HashtagIcon} />
       <SidebarMenuItem text="Notifications" Icon={BellIcon} />
@@ -42,8 +42,7 @@ const Sidebar = () => (
         style={{
           borderRadius: "50%",
           objectFit: "cover",
-          marginRight: '0.6rem'
-       
+          marginRight: "0.6rem",
         }}
         width="40"
         height="40"
@@ -51,13 +50,13 @@ const Sidebar = () => (
         alt="userimage"
       />
 
-      <div className='leading-5 hidden xl:inline'>
+      <div className="leading-5 hidden xl:inline">
         <h4 className="font-bold">Ali Mizbani</h4>
-        <p className='text-gray-500'>@codewithalimizbani</p>
+        <p className="text-gray-500">@codewithalimizbani</p>
       </div>
-        <DotsHorizontalIcon className="h-5 xl:ml-8 hidden xl:inline" />
+      <DotsHorizontalIcon className="h-5 xl:ml-8 hidden xl:inline" />
     </div>
-  </div> 
+  </div>
 );
 
 export default Sidebar;

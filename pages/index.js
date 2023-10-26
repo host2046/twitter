@@ -3,7 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Feed from "../components/Feed";
 import Widgets from "../components/Widgets";
 
-const index = () => {
+const Home = ({ newsResults }) => {
   return (
     <div>
       <Head>
@@ -11,13 +11,26 @@ const index = () => {
         <meta name="description" content="genrerated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen max-w-7xl mx-auto ">
+      <main className="flex min-h-screen  mx-auto ">
         <Sidebar />
         <Feed />
-        <Widgets />
+        <Widgets newsResults={newsResults.articles} />
       </main>
     </div>
   );
 };
+// https://saurav.tech/NewsAPI/top-headlines/category/business/us.json
 
-export default index;
+export async function getServerSideProps() {
+  const res = await fetch(
+    "https://saurav.tech/NewsAPI/top-headlines/category/business/us.json"
+  );
+  const newsResults = await res.json();
+  return {
+    props: {
+      newsResults,
+    },
+  };
+}
+
+export default Home;
