@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const News = ({ article }) => {
   return (
     <a href={article.url} target="_blank">
