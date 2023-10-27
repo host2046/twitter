@@ -2,10 +2,11 @@ import { SearchIcon } from "@heroicons/react/outline";
 import News from "./News";
 import { useState } from "react";
 
-const Widgets = ({ newsResults }) => {
+const Widgets = ({ newsResults, randomUsersResults }) => {
   const [articleNum, setArticleNum] = useState(3);
+  const [randomUserNum, setRandomUserNum] = useState(3);
   const articleHandler = () => {
-    setArticleNum((prev) => prev + 3);
+    setArticleNum(articleNum + 3);
   };
 
   return (
@@ -31,6 +32,39 @@ const Widgets = ({ newsResults }) => {
           className="text-blue-300 pb-3 pl-4 hover:text-blue-400"
         >
           show More
+        </button>
+      </div>
+      <div className="text-gray-700 space-y-3 bg-gray-100 pt-2 rounded-xl w-[90%] xl:w-[75%] sticky top-16">
+        <h4 className="font-bold text-xl px-4">Who to follow</h4>
+        {randomUsersResults.slice(0, randomUserNum).map((user) => (
+          <div
+            key={user.login.username}
+            className="flex items-center justify-between px-4 py-2 space-x-1 cursor-pointer hover:bg-gray-200 transition duration-200"
+          >
+            <img
+              className=" object-cover rounded-full"
+              width="40"
+              src={user.picture.thumbnail}
+              alt=""
+            />
+            <div className="truncate leading-5">
+              <h6 className="font-bold text-[14px]  hover:underline truncate">
+                {user.login.username}
+              </h6>
+              <h5 className="text-[13px] text-gray-500 truncate">
+                {user.name.first + " " + user.name.last}
+              </h5>
+            </div>
+            <button className="text-white px-3.5 py-1.5 bg-black rounded-full text-sm font-bold hover:brightness-95 ">
+              follow
+            </button>
+          </div>
+        ))}
+        <button
+          onClick={() => setRandomUserNum(randomUserNum + 3)}
+          className="text-blue-300 pb-3 pl-4 hover:text-blue-400"
+        >
+          Show More
         </button>
       </div>
     </div>
