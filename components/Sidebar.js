@@ -21,9 +21,10 @@ const Sidebar = () => {
     <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full pl-24">
       <div className="hoverEffect p-0 hover:bg-blue-100 xl:p-1.5 ">
         <Image
+          className="rounded-full"
           width="50"
           height="50"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/220px-Logo_of_Twitter.svg.png"
+          src="https://cdn.punchng.com/wp-content/uploads/2023/07/24084806/Twitter-new-logo.jpeg"
           alt="tweet-logo"
         />
       </div>

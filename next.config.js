@@ -4,7 +4,8 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
-      "upload.wikimedia.org",
+      "cdn.punchng.com",
+      // "upload.wikimedia.org",
       "avatars.githubusercontent.com",
       "images.unsplash.com",
     ],
