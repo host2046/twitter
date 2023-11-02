@@ -94,7 +94,7 @@ const Input = () => {
                       className=""
                       onClick={() => filePickerRef.current.click()}
                     >
-                      <PhotographIcon className="w-10 h-10 p-2 text-sky-500 hover:bg-sky-100 rounded-full" />
+                      <PhotographIcon className="hoverEffect w-10 h-10 p-2 text-sky-500 hover:bg-sky-100 rounded-full" />
                       <input
                         type="file"
                         hidden
@@ -102,7 +102,7 @@ const Input = () => {
                         onChange={addImageToPost}
                       />
                     </div>
-                    <EmojiHappyIcon className="w-10 h-10 p-2 text-sky-500 hover:bg-sky-100 rounded-full" />
+                    <EmojiHappyIcon className="hoverEffect w-10 h-10 p-2 text-sky-500 hover:bg-sky-100 rounded-full" />
                   </div>
                   <button
                     onClick={sendPost}
