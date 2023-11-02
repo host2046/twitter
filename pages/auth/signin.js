@@ -12,8 +12,8 @@ const signin = ({ providers }) => {
         {Object.values(providers).map((provider) => (
           <div key={provider.name} className="flex flex-col items-center">
             <img
-              className="w-36 object-cover"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Logo_of_Twitter.svg/220px-Logo_of_Twitter.svg.png"
+              className="w-36 object-cover rounded-lg"
+              src="https://cdn.punchng.com/wp-content/uploads/2023/07/24084806/Twitter-new-logo.jpeg"
               alt="twitter logo"
             />
             <p className="text-center text-sm italic my-10">

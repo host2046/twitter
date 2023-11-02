@@ -17,20 +17,22 @@ import {
 import { signIn, useSession } from "next-auth/react";
 
 import Moment from "react-moment";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { useEffect, useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
 
 const Post = ({ post }) => {
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "posts", post.id, "likes"),
-      (snapshot) => setLikes(snapshot.docs)
-    );
-  }, [db]);
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", post.id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db]
+  );
 
   useEffect(() => {
     setHasLiked(
@@ -49,6 +51,12 @@ const Post = ({ post }) => {
       }
     } else {
       signIn();
+    }
+  };
+  const deletePost = async () => {
+    if (window.confirm("Are you sure to delete this post?")) {
+      deleteDoc(doc(db, "posts", post.id));
+      deleteObject(ref(storage, `posts/${post.id}/image`));
     }
   };
   return (
@@ -94,11 +102,13 @@ const Post = ({ post }) => {
         {/* icons */}
 
         <div className="flex justify-between text-gray-500 p-2">
-          <div className="flex items-center select-none">
-            <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
-          </div>
-
-          <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+          <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
+          {session?.user.uid === post.data().id && (
+            <TrashIcon
+              onClick={deletePost}
+              className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+            />
+          )}
 
           <div className="flex items-center">
             {hasLiked ? (
