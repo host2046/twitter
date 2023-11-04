@@ -2,6 +2,7 @@ import Head from "next/head";
 import Sidebar from "../components/Sidebar";
 import Feed from "../components/Feed";
 import Widgets from "../components/Widgets";
+import CommentModal from "../components/CommentModal";
 
 const Home = ({ newsResults, randomUsersResults }) => {
   return (
@@ -18,6 +19,7 @@ const Home = ({ newsResults, randomUsersResults }) => {
           newsResults={newsResults.articles}
           randomUsersResults={randomUsersResults.results}
         />
+        <CommentModal />
       </main>
     </div>
   );

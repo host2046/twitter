@@ -20,8 +20,11 @@ import Moment from "react-moment";
 import { db, storage } from "../firebase";
 import { useEffect, useState } from "react";
 import { deleteObject, ref } from "firebase/storage";
+import { useDispatch } from "react-redux";
+import { modalAction } from "../store";
 
 const Post = ({ post }) => {
+  const disPatch = useDispatch();
   const { data: session } = useSession();
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
@@ -104,7 +107,10 @@ const Post = ({ post }) => {
         {/* icons */}
 
         <div className="flex justify-between text-gray-500 p-2">
-          <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
+          <ChatIcon
+            onClick={() => disPatch(modalAction.toggleModal())}
+            className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
+          />
           {session?.user.uid === post.data().id && (
             <TrashIcon
               onClick={deletePost}
