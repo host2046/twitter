@@ -21,7 +21,7 @@ import { db, storage } from "../firebase";
 import { useEffect, useState } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useDispatch } from "react-redux";
-import { modalAction } from "../store";
+import { modalAction, postIdAction } from "../store";
 
 const Post = ({ post }) => {
   const disPatch = useDispatch();
@@ -64,6 +64,15 @@ const Post = ({ post }) => {
       }
     }
   };
+
+  const commentHandler = () => {
+    if (session) {
+      disPatch(postIdAction.setPostId(post.id));
+      disPatch(modalAction.setOpen());
+    } else {
+      signIn();
+    }
+  };
   return (
     <div className="flex p-3 cursor-pointer border-b border-gray-200">
       {/* user image */}
@@ -96,7 +105,7 @@ const Post = ({ post }) => {
 
         {/* post text */}
 
-        <p className="text-gray-800 text-[15px sm:text-[16px] mb-2">
+        <p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">
           {post.data().text}
         </p>
 
@@ -108,7 +117,7 @@ const Post = ({ post }) => {
 
         <div className="flex justify-between text-gray-500 p-2">
           <ChatIcon
-            onClick={() => disPatch(modalAction.toggleModal())}
+            onClick={commentHandler}
             className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
           />
           {session?.user.uid === post.data().id && (

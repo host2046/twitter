@@ -57,7 +57,7 @@ const Input = () => {
   return (
     <>
       {session && (
-        <div className="flex p-3 space-x-3">
+        <div className="flex p-3 space-x-3 border-b border-gray-200">
           <img
             onClick={signOut}
             className="w-11 h-11 rounded-full object-cover cursor-pointer"
