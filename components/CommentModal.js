@@ -45,7 +45,7 @@ const CommentModal = () => {
 
     disPatch(modalAction.setOpen(false));
     setInput("");
-    router.push(`posts/${postId}`);
+    router.push(`/posts/${postId}`);
   };
   return (
     <div>
