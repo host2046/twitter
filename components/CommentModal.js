@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-modal";
-import { modalAction, postIdAction } from "../store";
+import { modalAction } from "../store";
 import {
   EmojiHappyIcon,
   PhotographIcon,
@@ -8,10 +8,17 @@ import {
 } from "@heroicons/react/outline";
 
 import { useEffect, useState } from "react";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const CommentModal = () => {
   const open = useSelector((state) => state.modal.modalIsOpen);
@@ -21,10 +28,25 @@ const CommentModal = () => {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
 
+  const router = useRouter();
+
   useEffect(() => {
     onSnapshot(doc(db, "posts", postId), (snapshot) => setPost(snapshot));
   }, [postId, db]);
-  const sendComment = () => {};
+
+  const sendComment = async () => {
+    await addDoc(collection(db, "posts", postId, "comments"), {
+      comment: input,
+      name: session.user.name,
+      username: session.user.username,
+      userImage: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+
+    disPatch(modalAction.setOpen(false));
+    setInput("");
+    router.push(`posts/${postId}`);
+  };
   return (
     <div>
       {open && (
