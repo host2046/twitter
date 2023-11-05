@@ -12,18 +12,40 @@ import {
 import Input from "../../components/Input";
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import Post from "../../components/Post";
+import Comment from "../../components/Comment";
 
 const PostPage = ({ newsResults, randomUsersResults }) => {
   const router = useRouter();
   const { id } = router.query;
   const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
+
+  // get data
 
   useEffect(
     () => onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot)),
     [db, id]
   );
+
+  // get commnets
+
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setComments(snapshot.docs)
+    );
+  }, [db, id]);
 
   return (
     <div>
@@ -44,6 +66,11 @@ const PostPage = ({ newsResults, randomUsersResults }) => {
             </h2>
           </div>
           <Post id={id} post={post} />
+          {}
+          {comments.length > 0 &&
+            comments.map((comment) => (
+              <Comment key={comment.id} id={comment.id} comment={comment} />
+            ))}
         </div>
 
         <Widgets
