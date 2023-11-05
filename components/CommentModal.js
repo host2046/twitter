@@ -41,6 +41,7 @@ const CommentModal = () => {
       username: session.user.username,
       userImage: session.user.image,
       timestamp: serverTimestamp(),
+      userId: session.user.uid,
     });
 
     disPatch(modalAction.setOpen(false));

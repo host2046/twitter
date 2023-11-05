@@ -69,7 +69,12 @@ const PostPage = ({ newsResults, randomUsersResults }) => {
           {}
           {comments.length > 0 &&
             comments.map((comment) => (
-              <Comment key={comment.id} id={comment.id} comment={comment} />
+              <Comment
+                key={comment.id}
+                initalPostId={id}
+                commentId={comment.id}
+                comment={comment}
+              />
             ))}
         </div>
 
