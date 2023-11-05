@@ -21,6 +21,7 @@ import {
 } from "firebase/firestore";
 import Post from "../../components/Post";
 import Comment from "../../components/Comment";
+import { AnimatePresence, motion } from "framer-motion";
 
 const PostPage = ({ newsResults, randomUsersResults }) => {
   const router = useRouter();
@@ -66,16 +67,25 @@ const PostPage = ({ newsResults, randomUsersResults }) => {
             </h2>
           </div>
           <Post id={id} post={post} />
-          {}
-          {comments.length > 0 &&
-            comments.map((comment) => (
-              <Comment
-                key={comment.id}
-                initalPostId={id}
-                commentId={comment.id}
-                comment={comment}
-              />
-            ))}
+          <AnimatePresence>
+            {comments.length > 0 &&
+              comments.map((comment) => (
+                <motion.div
+                  key={comment.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 2 }}
+                >
+                  <Comment
+                    key={comment.id}
+                    initalPostId={id}
+                    commentId={comment.id}
+                    comment={comment}
+                  />
+                </motion.div>
+              ))}
+          </AnimatePresence>
         </div>
 
         <Widgets

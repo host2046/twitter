@@ -1,5 +1,5 @@
 import Image from "next/image";
-import myImage from "../public/image/myImage.jpg";
+
 import {
   HashtagIcon,
   BellIcon,
@@ -11,7 +11,7 @@ import {
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
-import SideBarMenuItem from "./SideBarMenuItem";
+import SideBarMenuItem from "./SidebarMenuItem";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Sidebar = () => {
