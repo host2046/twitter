@@ -8,8 +8,6 @@ import {
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 
-import { signIn, useSession } from "next-auth/react";
-
 import Moment from "react-moment";
 
 import { useEffect, useState } from "react";
