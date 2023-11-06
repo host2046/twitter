@@ -5,7 +5,7 @@ const signin = ({ providers }) => {
   const router = useRouter();
   return (
     <>
-      {providers ? (
+      {providers && (
         <div className="flex items-center mt-20 justify-center space-x-4">
           <img
             className="hidden md:inline-flex object-cover md:w-44 md:h-80 rotate-6"
@@ -33,8 +33,6 @@ const signin = ({ providers }) => {
             ))}
           </div>
         </div>
-      ) : (
-        <button onClick={() => router.push("/")}>SignIn</button>
       )}
     </>
   );
