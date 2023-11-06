@@ -1,8 +1,6 @@
 import { getProviders, signIn } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const signin = ({ providers }) => {
-  const router = useRouter();
   return (
     <>
       {providers && (
