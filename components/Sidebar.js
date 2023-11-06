@@ -13,11 +13,10 @@ import {
 import { HomeIcon } from "@heroicons/react/solid";
 import SideBarMenuItem from "./SidebarMenuItem";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { userStateAction } from "../store";
+
 import { useRecoilState } from "recoil";
 import { userState } from "../atom/userAtom";
 import { useRouter } from "next/router";

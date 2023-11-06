@@ -4,12 +4,8 @@ import Widgets from "../../components/Widgets";
 import CommentModal from "../../components/CommentModal";
 
 import { useRouter } from "next/router";
-import {
-  ArrowLeftIcon,
-  BackspaceIcon,
-  SparklesIcon,
-} from "@heroicons/react/outline";
-import Input from "../../components/Input";
+import { ArrowLeftIcon } from "@heroicons/react/outline";
+
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import {
