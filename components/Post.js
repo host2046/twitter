@@ -14,7 +14,6 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { signIn, useSession } from "next-auth/react";
 
 import Moment from "react-moment";
 import { db, storage } from "../firebase";
@@ -23,10 +22,13 @@ import { deleteObject, ref } from "firebase/storage";
 import { useDispatch } from "react-redux";
 import { modalAction, postIdAction } from "../store";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
 
 const Post = ({ post, id }) => {
   const disPatch = useDispatch();
-  const { data: session } = useSession();
+
+  const [currentUser] = useRecoilState(userState);
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
@@ -49,22 +51,20 @@ const Post = ({ post, id }) => {
   );
 
   useEffect(() => {
-    setHasLiked(
-      likes.findIndex((like) => like.id === session?.user.uid) !== -1
-    );
-  }, [likes]);
+    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+  }, [likes, currentUser]);
 
   const likePost = async () => {
-    if (session) {
+    if (currentUser) {
       if (hasLiked) {
-        await deleteDoc(doc(db, "posts", id, "likes", session?.user.uid));
+        await deleteDoc(doc(db, "posts", id, "likes", currentUser?.uid));
       } else {
-        await setDoc(doc(db, "posts", id, "likes", session?.user.uid), {
-          username: session.user.username,
+        await setDoc(doc(db, "posts", id, "likes", currentUser?.uid), {
+          username: currentUser.username,
         });
       }
     } else {
-      signIn();
+      router.push("/auth/signin");
     }
   };
   const deletePost = async () => {
@@ -79,11 +79,11 @@ const Post = ({ post, id }) => {
   };
 
   const commentHandler = () => {
-    if (session) {
+    if (currentUser) {
       disPatch(postIdAction.setPostId(id));
       disPatch(modalAction.setOpen());
     } else {
-      signIn();
+      router.push("/auth/signin");
     }
   };
   return (
@@ -146,7 +146,7 @@ const Post = ({ post, id }) => {
               <span className="text-sm text-gray-700">{comments.length}</span>
             )}
           </div>
-          {session?.user.uid === post?.data()?.id && (
+          {currentUser?.uid === post?.data()?.id && (
             <TrashIcon
               onClick={deletePost}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"

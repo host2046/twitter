@@ -4,7 +4,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { useRef, useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+
 import {
   addDoc,
   collection,
@@ -14,23 +14,26 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
+import { getAuth, signOut } from "firebase/auth";
 
 const Input = () => {
-  const { data: session } = useSession();
-  console.log(session);
   const [input, setInput] = useState("");
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const auth = getAuth();
   const [isLoading, setIsloading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const filePickerRef = useRef(null);
   const sendPost = async () => {
     setIsloading(true);
     const docRef = await addDoc(collection(db, "posts"), {
-      id: session.user.uid,
+      id: currentUser.uid,
       text: input,
-      userImage: session.user.image,
+      userImage: currentUser.userImage,
       timestamps: serverTimestamp(),
-      name: session.user.name,
-      username: session.user.username,
+      name: currentUser.name,
+      username: currentUser.username,
     });
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
     if (selectedFile) {
@@ -54,14 +57,18 @@ const Input = () => {
       setSelectedFile(readerEvent.target.result);
     };
   };
+  const onSignOut = () => {
+    signOut(auth);
+    setCurrentUser(null);
+  };
   return (
     <>
-      {session && (
+      {currentUser && (
         <div className="flex p-3 space-x-3 border-b border-gray-200">
           <img
-            onClick={signOut}
+            onClick={onSignOut}
             className="w-11 h-11 rounded-full object-cover cursor-pointer"
-            src={session.user.image}
+            src={currentUser?.userImage}
             alt="user-image"
           />
           <div className="w-full divide-y divide-gray-200">

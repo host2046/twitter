@@ -17,15 +17,17 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import Moment from "react-moment";
-import { useSession } from "next-auth/react";
+
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
 
 const CommentModal = () => {
   const open = useSelector((state) => state.modal.modalIsOpen);
   const disPatch = useDispatch();
   const postId = useSelector((state) => state.postId.value);
   const [post, setPost] = useState({});
-  const { data: session } = useSession();
+  const [currentUser] = useRecoilState(userState);
   const [input, setInput] = useState("");
 
   const router = useRouter();
@@ -37,11 +39,11 @@ const CommentModal = () => {
   const sendComment = async () => {
     await addDoc(collection(db, "posts", postId, "comments"), {
       comment: input,
-      name: session.user.name,
-      username: session.user.username,
-      userImage: session.user.image,
+      name: currentUser.name,
+      username: currentUser.username,
+      userImage: currentUser.userImage,
       timestamp: serverTimestamp(),
-      userId: session.user.uid,
+      userId: currentUser.uid,
     });
 
     disPatch(modalAction.setOpen(false));
@@ -88,7 +90,7 @@ const CommentModal = () => {
             <div className="flex p-3 space-x-3">
               <img
                 className="w-11 h-11 rounded-full object-cover cursor-pointer"
-                src={session.user.image}
+                src={currentUser.userImage}
                 alt="user-image"
               />
               <div className="w-full ">

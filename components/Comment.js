@@ -25,10 +25,12 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
+import { useRecoilState } from "recoil";
+import { userState } from "../atom/userAtom";
 
 const Comment = ({ comment, initalPostId, commentId }) => {
   const disPatch = useDispatch();
-  const { data: session } = useSession();
+  const [currentUser] = useRecoilState(userState);
   const [likes, setLikes] = useState([]);
 
   const [hasLiked, setHasLiked] = useState(false);
@@ -42,13 +44,11 @@ const Comment = ({ comment, initalPostId, commentId }) => {
   }, [db, initalPostId, commentId]);
 
   useEffect(() => {
-    setHasLiked(
-      likes.findIndex((like) => like.id === session?.user.uid) !== -1
-    );
-  }, [likes]);
+    setHasLiked(likes.findIndex((like) => like.id === currentUser?.uid) !== -1);
+  }, [likes, currentUser]);
 
   const likeComment = async () => {
-    if (session) {
+    if (currentUser) {
       if (hasLiked) {
         await deleteDoc(
           doc(
@@ -58,7 +58,7 @@ const Comment = ({ comment, initalPostId, commentId }) => {
             "comments",
             commentId,
             "likes",
-            session?.user.uid
+            currentUser?.uid
           )
         );
       } else {
@@ -70,15 +70,15 @@ const Comment = ({ comment, initalPostId, commentId }) => {
             "comments",
             commentId,
             "likes",
-            session?.user.uid
+            currentUser?.uid
           ),
           {
-            username: session.user.username,
+            username: currentUser.username,
           }
         );
       }
     } else {
-      signIn();
+      router.push("/auth/signin");
     }
   };
   const deleteComment = async () => {
@@ -88,11 +88,11 @@ const Comment = ({ comment, initalPostId, commentId }) => {
   };
 
   const commentHandler = () => {
-    if (session) {
+    if (currentUser) {
       disPatch(postIdAction.setPostId(initalPostId));
       disPatch(modalAction.setOpen());
     } else {
-      signIn();
+      router.push("/auth/signin");
     }
   };
   return (
@@ -140,7 +140,7 @@ const Comment = ({ comment, initalPostId, commentId }) => {
               className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
             />
           </div>
-          {session?.user.uid === comment?.data().userId && (
+          {currentUser?.uid === comment?.data().userId && (
             <TrashIcon
               onClick={deleteComment}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"

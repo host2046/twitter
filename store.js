@@ -24,7 +24,10 @@ export const modalAction = modalSlice.actions;
 export const postIdAction = postIdSlice.actions;
 
 const store = configureStore({
-  reducer: { modal: modalSlice.reducer, postId: postIdSlice.reducer },
+  reducer: {
+    modal: modalSlice.reducer,
+    postId: postIdSlice.reducer,
+  },
 });
 
 export default store;
