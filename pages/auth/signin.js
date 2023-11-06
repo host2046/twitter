@@ -45,4 +45,4 @@ export async function getServerSideProps() {
   };
 }
 export default signin;
-// https://twitter-woad-two.vercel.app/api/auth/auth/callback/google
+//https://twitter-6eqa0ecq2-alihost888-gmailcom.vercel.app/api/auth/callback/google
